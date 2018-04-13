@@ -41,7 +41,10 @@ public class PresenceUpdater extends Thread {
 		if (main.mumbleLink == null) { return; }
 
 		JsonObject identity = main.mumbleLink.getIdentityJson();
+		if (identity == null) { return; }
 		JsonObject mapData = main.idTranslator.getMapData(identity.get("map_id").getAsInt());
+
+		main.dialog.labelContent.setText("Active!");
 
 		RichPresence.Builder builder = new RichPresence.Builder();
 		builder

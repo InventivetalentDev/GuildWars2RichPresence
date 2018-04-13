@@ -32,34 +32,52 @@ public class Gw2Rpc implements IPCListener {
 	MumbleLink      mumbleLink;
 	PresenceUpdater presenceUpdater;
 	IdTranslator    idTranslator;
+	StatusDialog    dialog;
 	boolean         processRunning = false;
 
 	public Gw2Rpc() throws NoDiscordClientException, InterruptedException {
 		this.client = new IPCClient(434425240794300418L);
 		this.client.setListener(this);
 
-		ProcessChecker processChecker = new ProcessChecker();
-		while (true) {
-			if (!processRunning) {
-				System.out.println("Waiting for Guild Wars 2 to start...");
-			}
-			boolean check = processChecker.isProcessRunning(PROCESS_NAME);
-			if (!processRunning && check) {
-				System.out.println("Guild Wars 2 started!");
-				processRunning = true;
+		this.dialog = new StatusDialog();
 
-				startup();
-			}
-			if (processRunning && !check) {
-				System.out.println("Guild Wars 2 closed!");
-				processRunning = false;
+		new Thread(() -> {
+			ProcessChecker processChecker = new ProcessChecker();
+			while (true) {
+				if (!processRunning) {
+					System.out.println("Waiting for Guild Wars 2 to start...");
+					dialog.labelContent.setText("Waiting for Guild Wars 2 to start...");
+				}
+				boolean check = processChecker.isProcessRunning(PROCESS_NAME);
+				if (!processRunning && check) {
+					System.out.println("Guild Wars 2 started!");
+					dialog.labelContent.setText("Guild Wars 2 started!");
+					processRunning = true;
 
-				shutdown();
-				break;
-			}
+					try {
+						startup();
+					} catch (NoDiscordClientException e) {
+						e.printStackTrace();
+					}
+				}
+				if (processRunning && !check) {
+					dialog.labelContent.setText("Guild Wars 2 closed!");
+					processRunning = false;
 
-			Thread.sleep(2000);
-		}
+					shutdown();
+					break;
+				}
+
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+
+		this.dialog.pack();
+		this.dialog.setVisible(true);
 	}
 
 	private void startup() throws NoDiscordClientException {

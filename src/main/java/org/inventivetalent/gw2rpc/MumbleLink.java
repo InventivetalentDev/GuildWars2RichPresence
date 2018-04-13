@@ -58,19 +58,19 @@ public class MumbleLink extends Thread {
 				identity = this.sharedMemory.getCharArray(592, 256);
 				context_len = this.sharedMemory.getInt(1104);
 				context = this.sharedMemory.getByteArray(1108, 256);
-//				System.out.println("uiVersion: " + uiVersion);
-//				System.out.println("uiTick: " + uiTick);
-//				System.out.println("fAvatarPosition: " + Arrays.toString(fAvatarPosition));
-//				System.out.println("fAvatarFront: " + Arrays.toString(fAvatarFront));
-//				System.out.println("fAvatarTop: " + Arrays.toString(fAvatarTop));
-//				System.out.println("gameName: " + (new String(gameName)).trim());
-//				System.out.println("fCameraPosition: " + Arrays.toString(fCameraPosition));
-//				System.out.println("fCameraFront: " + Arrays.toString(fCameraFront));
-//				System.out.println("fCameraTop: " + Arrays.toString(fCameraTop));
-//				System.out.println("identity: " + (new String(identity)).trim());
-//				System.out.println("context_len: " + context_len);
-//				System.out.println("context: " + Arrays.toString(context));
-//				System.out.println("#####################################################");
+				//				System.out.println("uiVersion: " + uiVersion);
+				//				System.out.println("uiTick: " + uiTick);
+				//				System.out.println("fAvatarPosition: " + Arrays.toString(fAvatarPosition));
+				//				System.out.println("fAvatarFront: " + Arrays.toString(fAvatarFront));
+				//				System.out.println("fAvatarTop: " + Arrays.toString(fAvatarTop));
+				//				System.out.println("gameName: " + (new String(gameName)).trim());
+				//				System.out.println("fCameraPosition: " + Arrays.toString(fCameraPosition));
+				//				System.out.println("fCameraFront: " + Arrays.toString(fCameraFront));
+				//				System.out.println("fCameraTop: " + Arrays.toString(fCameraTop));
+				//				System.out.println("identity: " + (new String(identity)).trim());
+				//				System.out.println("context_len: " + context_len);
+				//				System.out.println("context: " + Arrays.toString(context));
+				//				System.out.println("#####################################################");
 
 				Thread.sleep(REFRESH_RATE);
 			}
@@ -80,11 +80,14 @@ public class MumbleLink extends Thread {
 	}
 
 	public String getIdentity() {
-		return sanitizeIdentity(new String(identity)).trim();
+		if (this.identity == null) { return null; }
+		return sanitizeIdentity(new String(this.identity)).trim();
 	}
 
 	public JsonObject getIdentityJson() {
-		return new JsonParser().parse(getIdentity()).getAsJsonObject();
+		String identity = getIdentity();
+		if (identity == null || "null".equals(identity)) { return null; }
+		return new JsonParser().parse(identity).getAsJsonObject();
 	}
 
 	/**
