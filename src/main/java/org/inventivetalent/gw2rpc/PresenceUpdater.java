@@ -12,7 +12,7 @@ public class PresenceUpdater extends Thread {
 	final Gw2Rpc main;
 
 	OffsetDateTime startTime = OffsetDateTime.now();
-	boolean active = true;
+	boolean        active    = true;
 
 	PresenceUpdater(Gw2Rpc main) {
 		this.main = main;
@@ -48,8 +48,8 @@ public class PresenceUpdater extends Thread {
 				.setDetails("Playing as " + identity.get("name").getAsString() + ", a " + Gw2Rpc.RACES[identity.get("race").getAsInt()] + " " + Gw2Rpc.PROFESSIONS[identity.get("profession").getAsInt()])
 				.setState("Currently exploring " + mapData.get("name").getAsString() + " in " + mapData.get("region_name").getAsString() + " (" + mapData.get("continent_name").getAsString() + ")")
 				.setStartTimestamp(startTime)
-				.setLargeImage("canary-large", "Discord Canary")
-				.setSmallImage("ptb-small", "Discord PTB");
+				.setLargeImage("map_" + identity.get("map_id").getAsString(), mapData.get("name").getAsString())
+				.setSmallImage("prof_" + identity.get("profession").getAsString(), Gw2Rpc.PROFESSIONS[identity.get("profession").getAsInt()]);
 		main.client.sendRichPresence(builder.build());
 	}
 

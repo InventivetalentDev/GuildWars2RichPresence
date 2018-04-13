@@ -55,6 +55,7 @@ public class Gw2Rpc implements IPCListener {
 				processRunning = false;
 
 				shutdown();
+				break;
 			}
 
 			Thread.sleep(2000);
