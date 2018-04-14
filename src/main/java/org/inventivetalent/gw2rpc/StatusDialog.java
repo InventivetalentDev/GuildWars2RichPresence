@@ -12,6 +12,7 @@ public class StatusDialog extends JDialog {
 	private JButton buttonCancel;
 
 	StatusDialog(Gw2Rpc main) {
+		super((Dialog) null);
 		this.main = main;
 	}
 
@@ -20,7 +21,9 @@ public class StatusDialog extends JDialog {
 		setLocationByPlatform(true);
 
 		setTitle("Guild Wars 2 Discord Rich Presence");
-		setPreferredSize(new Dimension(350, 100));
+		setPreferredSize(new Dimension(350, 200));
+
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("Guild_Wars_2_Dragon_logo.jpg")));
 
 		JPanel contentPane = new JPanel();
 		labelContent = new JLabel("");

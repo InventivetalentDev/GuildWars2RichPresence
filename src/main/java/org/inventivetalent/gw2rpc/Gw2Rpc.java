@@ -54,7 +54,7 @@ public class Gw2Rpc implements IPCListener {
 				boolean check = processChecker.isProcessRunning(PROCESS_NAME);
 				if (!processRunning && check) {
 					System.out.println("Guild Wars 2 started!");
-					dialog.labelContent.setText("Guild Wars 2 started!");
+					dialog.labelContent.setText("Guild Wars 2 started! Waiting for info...");
 					processRunning = true;
 
 					try {
@@ -70,6 +70,12 @@ public class Gw2Rpc implements IPCListener {
 						dialog.labelContent.setText("Guild Wars 2 closed!");
 					}
 					processRunning = false;
+
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 
 					shutdown();
 					break;
