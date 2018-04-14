@@ -2,7 +2,6 @@ package org.inventivetalent.gw2rpc;
 
 import com.jagrosh.discordipc.IPCClient;
 import com.jagrosh.discordipc.IPCListener;
-import com.jagrosh.discordipc.entities.pipe.PipeStatus;
 import com.jagrosh.discordipc.exceptions.NoDiscordClientException;
 
 public class Gw2Rpc implements IPCListener {
@@ -82,7 +81,7 @@ public class Gw2Rpc implements IPCListener {
 				}
 
 				try {
-					Thread.sleep(5000);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -116,7 +115,11 @@ public class Gw2Rpc implements IPCListener {
 		if (this.mumbleLink != null) { this.mumbleLink.kill(); }
 		if (this.presenceUpdater != null) { this.presenceUpdater.kill(); }
 		if (this.client != null) {
-			if (this.client.getStatus() == PipeStatus.CONNECTED || this.client.getStatus() == PipeStatus.CONNECTING) { this.client.close(); }
+			try {
+				this.client.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		System.exit(0);

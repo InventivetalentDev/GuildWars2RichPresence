@@ -44,15 +44,17 @@ public class PresenceUpdater extends Thread {
 		if (identity == null) { return; }
 		JsonObject mapData = main.idTranslator.getMapData(identity.get("map_id").getAsInt());
 
-		main.dialog.labelContent.setText("<html><body>"
-				+ "Active! <br/>"
-				+ "<br/>Character:  " + identity.get("name").getAsString()
-				+ "<br/>Race:       " + Gw2Rpc.RACES[identity.get("race").getAsInt()]
-				+ "<br/>Profession: " + Gw2Rpc.PROFESSIONS[identity.get("profession").getAsInt()]
-				+ "<br/>Map:        " + mapData.get("name").getAsString()
-				+ "<br/>Region:     " + mapData.get("region_name").getAsString()
-				+ "<br/>Continent:  " + mapData.get("continent_name").getAsString()
-				+ "</body></html>");
+		if (!main.shouldShutdown) {
+			main.dialog.labelContent.setText("<html><body>"
+					+ "Active! <br/>"
+					+ "<br/>Character:  " + identity.get("name").getAsString()
+					+ "<br/>Race:       " + Gw2Rpc.RACES[identity.get("race").getAsInt()]
+					+ "<br/>Profession: " + Gw2Rpc.PROFESSIONS[identity.get("profession").getAsInt()]
+					+ "<br/>Map:        " + mapData.get("name").getAsString()
+					+ "<br/>Region:     " + mapData.get("region_name").getAsString()
+					+ "<br/>Continent:  " + mapData.get("continent_name").getAsString()
+					+ "</body></html>");
+		}
 
 		RichPresence.Builder builder = new RichPresence.Builder();
 		builder
