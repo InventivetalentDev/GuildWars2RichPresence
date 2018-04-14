@@ -1,55 +1,51 @@
 package org.inventivetalent.gw2rpc;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class StatusDialog extends JDialog {
-	private JPanel  contentPane;
-	private JButton buttonCancel;
+
+	final Gw2Rpc main;
 	JLabel labelContent;
+	private JButton buttonCancel;
 
-	public StatusDialog() {
-		setContentPane(contentPane);
-		setModal(true);
-		getRootPane().setDefaultButton(buttonCancel);
+	StatusDialog(Gw2Rpc main) {
+		this.main = main;
+	}
 
-		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
-		}
+	void createDialog() {
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		setLocationByPlatform(true);
 
-		buttonCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				onCancel();
-			}
-		});
+		setTitle("Guild Wars 2 Discord Rich Presence");
+		setPreferredSize(new Dimension(350, 100));
 
-		// call onCancel() when cross is clicked
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		JPanel contentPane = new JPanel();
+		labelContent = new JLabel("");
+		contentPane.add(labelContent);
+
+		JPanel buttonPane = new JPanel();
+		buttonCancel = new JButton("Exit");
+		buttonPane.add(buttonCancel);
+		contentPane.add(buttonPane);
+
+		add(contentPane);
+
+		buttonCancel.addActionListener(e -> onCancel());
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				onCancel();
 			}
 		});
 
-		// call onCancel() on ESCAPE
-		contentPane.registerKeyboardAction(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				onCancel();
-			}
-		}, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		pack();
+		setVisible(true);
 	}
 
 	private void onCancel() {
-		System.exit(0);
-		dispose();
+		main.shouldShutdown = true;
 	}
 
 }

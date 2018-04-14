@@ -2,6 +2,7 @@ package org.inventivetalent.gw2rpc;
 
 import com.jagrosh.discordipc.IPCClient;
 import com.jagrosh.discordipc.IPCListener;
+import com.jagrosh.discordipc.entities.pipe.PipeStatus;
 import com.jagrosh.discordipc.exceptions.NoDiscordClientException;
 
 public class Gw2Rpc implements IPCListener {
@@ -34,12 +35,14 @@ public class Gw2Rpc implements IPCListener {
 	IdTranslator    idTranslator;
 	StatusDialog    dialog;
 	boolean         processRunning = false;
+	boolean         shouldShutdown = false;
 
 	public Gw2Rpc() throws NoDiscordClientException, InterruptedException {
 		this.client = new IPCClient(434425240794300418L);
 		this.client.setListener(this);
 
-		this.dialog = new StatusDialog();
+		this.dialog = new StatusDialog(this);
+		this.dialog.createDialog();
 
 		new Thread(() -> {
 			ProcessChecker processChecker = new ProcessChecker();
@@ -60,8 +63,12 @@ public class Gw2Rpc implements IPCListener {
 						e.printStackTrace();
 					}
 				}
-				if (processRunning && !check) {
-					dialog.labelContent.setText("Guild Wars 2 closed!");
+				if (processRunning && !check || shouldShutdown) {
+					if (shouldShutdown) {
+						dialog.labelContent.setText("Shutting down...");
+					} else {
+						dialog.labelContent.setText("Guild Wars 2 closed!");
+					}
 					processRunning = false;
 
 					shutdown();
@@ -69,7 +76,7 @@ public class Gw2Rpc implements IPCListener {
 				}
 
 				try {
-					Thread.sleep(2000);
+					Thread.sleep(5000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -98,9 +105,15 @@ public class Gw2Rpc implements IPCListener {
 	}
 
 	private void shutdown() {
+		System.out.println("Shutting down...");
+
 		if (this.mumbleLink != null) { this.mumbleLink.kill(); }
 		if (this.presenceUpdater != null) { this.presenceUpdater.kill(); }
-		if (this.client != null) { this.client.close(); }
+		if (this.client != null) {
+			if (this.client.getStatus() == PipeStatus.CONNECTED || this.client.getStatus() == PipeStatus.CONNECTING) { this.client.close(); }
+		}
+
+		System.exit(0);
 	}
 
 }
