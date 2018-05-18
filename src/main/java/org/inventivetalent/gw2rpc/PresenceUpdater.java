@@ -88,7 +88,7 @@ public class PresenceUpdater extends Thread {
 					+ "<br/>Map:        " + mapData.get("name").getAsString()
 					+ "<br/>Sector:     " + (locationInfo != null ? locationInfo.sector.name : "n/a")
 					+ "<br/>POI:        " + (closestPoi != null ? closestPoi.name + "  " + closestPoi.chatLink : "n/a")
-					+ "<br/>Coords: ´   " + playerLocation.x + ", " + playerLocation.y
+					+ "<br/>Coords:     " + playerLocation.x + ", " + playerLocation.y
 					+ "</body></html>");
 		}
 
