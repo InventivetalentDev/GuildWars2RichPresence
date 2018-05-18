@@ -115,6 +115,8 @@ public class PresenceUpdater extends Thread {
 		string = string.replace("$sector", (locationInfo != null ? locationInfo.sector.name : mapData.get("name").getAsString()));
 		string = string.replace("$poi", closestPoi.name);
 		string = string.replace("$poi_link", closestPoi.chatLink);
+		string = string.replace("$x", String.valueOf(playerLocation.x));
+		string = string.replace("$y", String.valueOf(playerLocation.y));
 		return string;
 	}
 
