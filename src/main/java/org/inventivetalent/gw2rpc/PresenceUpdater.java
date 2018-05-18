@@ -113,7 +113,7 @@ public class PresenceUpdater extends Thread {
 		string = string.replace("$region", mapData.get("region_name").getAsString());
 		string = string.replace("$continent", mapData.get("continent_name").getAsString());
 		string = string.replace("$sector", (locationInfo != null ? locationInfo.sector.name : mapData.get("name").getAsString()));
-		string = string.replace("$poi", closestPoi != null && "n/a".equals(closestPoi.name) ? closestPoi.name : "");
+		string = string.replace("$poi", closestPoi != null ? closestPoi.name : "n/a");
 		string = string.replace("$poi_link", closestPoi != null ? closestPoi.chatLink : "n/a");
 		string = string.replace("$x", String.valueOf(playerLocation.x));
 		string = string.replace("$y", String.valueOf(playerLocation.y));

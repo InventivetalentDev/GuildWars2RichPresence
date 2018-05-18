@@ -106,6 +106,9 @@ public class RegionManager {
 			Map map = region.maps.get(info.map.id);
 			for (Iterator<PointOfInterest> it = map.pois.values().iterator(); it.hasNext(); ) {
 				PointOfInterest poi = it.next();
+				if ("vista".equals(poi.type)) {
+					continue;// skip, since they don't have names
+				}
 
 				double distance = poi.coord.distance(point);
 				if (distance < smallestDistance) {
