@@ -1,25 +1,52 @@
 package org.inventivetalent.gw2rpc;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import org.inventivetalent.gw2rpc.region.*;
 
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
 public class APIHelper {
 
+	final Gw2Rpc main;
+
 	java.util.Map<Integer, JsonObject> mapCache = new HashMap<>();
+
+	public APIHelper(Gw2Rpc main) {
+		this.main = main;
+	}
 
 	public JsonObject getMapData(int id) {
 		if (mapCache.containsKey(id)) { return mapCache.get(id); }
+		File mapDir = new File(main.dataDir, "maps");
+		if (!mapDir.exists()) { mapDir.mkdir(); }
+		File file = new File(mapDir, "map-" + id + ".json");
+		if (file.exists()) {
+			try (FileReader reader = new FileReader(file)) {
+				Gson gson = new Gson();
+				JsonObject json = gson.fromJson(reader, JsonObject.class);
+				mapCache.put(id, json);
+				return json;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
 		JsonObject json = getData("/maps/" + id).getAsJsonObject();
 		if (json != null) {
 			mapCache.put(id, json);
+
+			try {
+				file.createNewFile();
+				try (Writer writer = new FileWriter(file)) {
+					Gson gson = new GsonBuilder().create();
+					gson.toJson(json, writer);
+				}
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 		return json;
 	}

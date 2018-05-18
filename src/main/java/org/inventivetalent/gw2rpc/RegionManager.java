@@ -28,6 +28,7 @@ public class RegionManager {
 			this.floorDir.mkdir();
 
 			System.out.println("Downloading Region Data...");
+			main.dialog.labelContent.setText("Downloading Region Data...");
 			JsonArray floors = main.apiHelper.getFloors();
 			floors.forEach((JsonElement e) -> {
 				System.out.println("Floor #" + e.getAsInt());
@@ -119,7 +120,7 @@ public class RegionManager {
 	public RegionLocationInfo getLocationInfoByCoords(Set<Integer> floors, int regionId, int mapId, Point coords) {
 		for (Integer floor : floors) {
 			java.util.Map<Integer, Region> regionMap = this.floorRegionMap.get(floor);
-			System.out.println("regionMap: "+regionMap);
+			System.out.println("regionMap: " + regionMap);
 			if (regionMap == null) { continue; }
 			Region region = regionMap.get(regionId);
 			if (region == null) { return null; }

@@ -103,7 +103,7 @@ public class Gw2Rpc implements IPCListener {
 
 	private void startup() throws NoDiscordClientException {
 		this.presenceUpdater = new PresenceUpdater(this);
-		this.apiHelper = new APIHelper();
+		this.apiHelper = new APIHelper(this);
 		this.regionManager = new RegionManager(this);
 
 		System.out.println("Connecting Discord client...");
