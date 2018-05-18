@@ -86,9 +86,9 @@ public class PresenceUpdater extends Thread {
 					+ "<br/>Continent:  " + mapData.get("continent_name").getAsString()
 					+ "<br/>Region:     " + mapData.get("region_name").getAsString()
 					+ "<br/>Map:        " + mapData.get("name").getAsString()
-					+ "<br/>Sector: " + (locationInfo != null ? locationInfo.sector.name : "n/a")
-					+ "<br/>POI: " + closestPoi.name + "  " + closestPoi.chatLink
-					+ "<br/>Coords: " + playerLocation.x + ", " + playerLocation.y
+					+ "<br/>Sector:     " + (locationInfo != null ? locationInfo.sector.name : "n/a")
+					+ "<br/>POI:        " + (closestPoi != null ? closestPoi.name + "  " + closestPoi.chatLink : "n/a")
+					+ "<br/>Coords: ´   " + playerLocation.x + ", " + playerLocation.y
 					+ "</body></html>");
 		}
 
@@ -113,8 +113,8 @@ public class PresenceUpdater extends Thread {
 		string = string.replace("$region", mapData.get("region_name").getAsString());
 		string = string.replace("$continent", mapData.get("continent_name").getAsString());
 		string = string.replace("$sector", (locationInfo != null ? locationInfo.sector.name : mapData.get("name").getAsString()));
-		string = string.replace("$poi", closestPoi.name);
-		string = string.replace("$poi_link", closestPoi.chatLink);
+		string = string.replace("$poi", closestPoi != null ? closestPoi.name : "n/a");
+		string = string.replace("$poi_link", closestPoi != null ? closestPoi.chatLink : "n/a");
 		string = string.replace("$x", String.valueOf(playerLocation.x));
 		string = string.replace("$y", String.valueOf(playerLocation.y));
 		return string;

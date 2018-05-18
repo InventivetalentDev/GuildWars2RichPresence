@@ -4,6 +4,8 @@ import com.jagrosh.discordipc.IPCClient;
 import com.jagrosh.discordipc.IPCListener;
 import com.jagrosh.discordipc.exceptions.NoDiscordClientException;
 
+import java.io.File;
+
 public class Gw2Rpc implements IPCListener {
 
 	static final String PROCESS_NAME = "Gw2-64.exe";
@@ -28,16 +30,22 @@ public class Gw2Rpc implements IPCListener {
 			"Sylvari"
 	};
 
+	File            dataDir;
 	IPCClient       client;
 	MumbleLink      mumbleLink;
 	PresenceUpdater presenceUpdater;
 	APIHelper       apiHelper;
-	RegionManager regionManager;
+	RegionManager   regionManager;
 	StatusDialog    dialog;
 	boolean         processRunning = false;
 	boolean         shouldShutdown = false;
 
 	public Gw2Rpc() throws NoDiscordClientException, InterruptedException {
+		this.dataDir = new File("data");
+		if (!this.dataDir.exists()) {
+			this.dataDir.mkdir();
+		}
+
 		this.client = new IPCClient(434425240794300418L);
 		this.client.setListener(this);
 
