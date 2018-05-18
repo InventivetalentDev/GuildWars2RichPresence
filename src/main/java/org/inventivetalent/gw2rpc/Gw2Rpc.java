@@ -31,7 +31,8 @@ public class Gw2Rpc implements IPCListener {
 	IPCClient       client;
 	MumbleLink      mumbleLink;
 	PresenceUpdater presenceUpdater;
-	IdTranslator    idTranslator;
+	APIHelper       apiHelper;
+	RegionManager regionManager;
 	StatusDialog    dialog;
 	boolean         processRunning = false;
 	boolean         shouldShutdown = false;
@@ -94,7 +95,8 @@ public class Gw2Rpc implements IPCListener {
 
 	private void startup() throws NoDiscordClientException {
 		this.presenceUpdater = new PresenceUpdater(this);
-		this.idTranslator = new IdTranslator();
+		this.apiHelper = new APIHelper();
+		this.regionManager = new RegionManager(this);
 
 		System.out.println("Connecting Discord client...");
 		this.client.connect();

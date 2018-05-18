@@ -21,7 +21,7 @@ public class StatusDialog extends JDialog {
 		setLocationByPlatform(true);
 
 		setTitle("Guild Wars 2 Discord Rich Presence");
-		setPreferredSize(new Dimension(350, 200));
+		setPreferredSize(new Dimension(350, 250));
 
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("Guild_Wars_2_Dragon_logo.jpg")));
 
