@@ -28,7 +28,7 @@ public class RegionManager {
 			this.floorDir.mkdir();
 
 			System.out.println("Downloading Region Data...");
-			main.dialog.labelContent.setText("Downloading Region Data...");
+			main.dialog.statusLabel.setText("Downloading Region Data...");
 			JsonArray floors = main.apiHelper.getFloors();
 			floors.forEach((JsonElement e) -> {
 				System.out.println("Floor #" + e.getAsInt());
@@ -139,14 +139,14 @@ public class RegionManager {
 		return null;
 	}
 
-	//	public RegionLocationInfo getLocationInfoByCoords(Point coords) {
+	//	public RegionLocationInfo getLocationInfoByCoords(Point coordsX) {
 	//		for (Iterator<Region> it = this.regionMap.values().iterator(); it.hasNext(); ) {
 	//			Region region = it.next();
 	//			for (Iterator<Map> it1 = region.maps.values().iterator(); it1.hasNext(); ) {
 	//				Map map = it1.next();
 	//				for (Iterator<Sector> it2 = map.sectors.values().iterator(); it2.hasNext(); ) {
 	//					Sector sector = it2.next();
-	//					if (sector.bounds.contains(coords)) {
+	//					if (sector.bounds.contains(coordsX)) {
 	//						return new RegionLocationInfo(region, map, sector);
 	//					}
 	//				}

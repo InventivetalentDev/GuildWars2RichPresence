@@ -16,6 +16,9 @@ public class PresenceUpdater extends Thread {
 	private static final long   UPDATE_RATE     = 2000;
 	private static final double UNIT_MULTIPLIER = 1 / .0254;
 
+	public static String DETAILS_FORMAT = "Playing as $name, a $race $profession in $map, $region";
+	public static String STATE_FORMAT   = "Currently exploring $sector, near $poi";
+
 	final Gw2Rpc main;
 
 	OffsetDateTime startTime = OffsetDateTime.now();
@@ -78,22 +81,28 @@ public class PresenceUpdater extends Thread {
 		}
 
 		if (!main.shouldShutdown) {
-			main.dialog.labelContent.setText("<html><body>"
-					+ "Active! <br/>"
-					+ "<br/>Character:  " + identity.get("name").getAsString()
-					+ "<br/>Race:       " + Gw2Rpc.RACES[identity.get("race").getAsInt()]
-					+ "<br/>Profession: " + Gw2Rpc.PROFESSIONS[identity.get("profession").getAsInt()]
-					+ "<br/>Continent:  " + mapData.get("continent_name").getAsString() + " (" + mapData.get("continent_id").getAsInt() + ")"
-					+ "<br/>Region:     " + mapData.get("region_name").getAsString() + " (" + mapData.get("region_id").getAsInt() + ")"
-					+ "<br/>Map:        " + mapData.get("name").getAsString() + " (" + mapData.get("id").getAsInt() + ")"
-					+ "<br/>Sector:     " + (locationInfo != null ? locationInfo.sector.name + " (" + locationInfo.sector.id + ")" : "n/a")
-					+ "<br/>POI:        " + (closestPoi != null ? (closestPoi.name + "  " + closestPoi.chatLink + " (" + closestPoi.type + ")") : "n/a")
-					+ "<br/>Coords:     " + playerLocation.x + ", " + playerLocation.y
-					+ "</body></html>");
+			main.dialog.statusLabel.setText("Active!");
+			main.dialog.character.setText(identity.get("name").getAsString());
+			main.dialog.race.setText(Gw2Rpc.RACES[identity.get("race").getAsInt()]);
+			main.dialog.raceId.setText(identity.get("race").getAsString());
+			main.dialog.profession.setText(Gw2Rpc.PROFESSIONS[identity.get("profession").getAsInt()]);
+			main.dialog.professionId.setText(identity.get("profession").getAsString());
+			main.dialog.continent.setText(mapData.get("continent_name").getAsString());
+			main.dialog.continentId.setText(mapData.get("continent_id").getAsString());
+			main.dialog.region.setText(mapData.get("region_name").getAsString());
+			main.dialog.regionId.setText(mapData.get("region_id").getAsString());
+			main.dialog.map.setText(mapData.get("name").getAsString());
+			main.dialog.mapId.setText(mapData.get("id").getAsString());
+			main.dialog.sector.setText((locationInfo != null ? locationInfo.sector.name : "n/a"));
+			main.dialog.sectorId.setText((locationInfo != null ? String.valueOf(locationInfo.sector.id) : "n/a"));
+			main.dialog.poi.setText((closestPoi != null ? closestPoi.name : "n/a"));
+			main.dialog.poiChat.setText((closestPoi != null ? closestPoi.chatLink : "n/a"));
+			main.dialog.coordsX.setText(String.valueOf(playerLocation.x));
+			main.dialog.coordsY.setText(String.valueOf(playerLocation.y));
 		}
 
-		String detailsFormat = "Playing as $name, a $race $profession in $map, $region";
-		String stateFormat = "Currently exploring $sector, near $poi";
+		String detailsFormat = main.dialog.detailsFormat.getText();
+		String stateFormat = main.dialog.stateFormat.getText();
 
 		RichPresence.Builder builder = new RichPresence.Builder();
 		builder

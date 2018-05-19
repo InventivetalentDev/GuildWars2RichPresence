@@ -56,19 +56,20 @@ public class Gw2Rpc implements IPCListener {
 		}
 
 		this.dialog = new StatusDialog(this);
-		this.dialog.createDialog();
+		this.dialog.display();
+
 
 		new Thread(() -> {
 			ProcessChecker processChecker = new ProcessChecker();
 			while (true) {
 				if (!processRunning) {
 					System.out.println("Waiting for Guild Wars 2 to start...");
-					dialog.labelContent.setText("Waiting for Guild Wars 2 to start...");
+					dialog.statusLabel.setText("Waiting for Guild Wars 2 to start...");
 				}
 				boolean check = processChecker.isProcessRunning(PROCESS_NAME);
 				if (!processRunning && check) {
 					System.out.println("Guild Wars 2 started!");
-					dialog.labelContent.setText("Guild Wars 2 started! Waiting for info...");
+					dialog.statusLabel.setText("Guild Wars 2 started! Waiting for info...");
 					processRunning = true;
 
 					try {
@@ -79,9 +80,9 @@ public class Gw2Rpc implements IPCListener {
 				}
 				if (processRunning && !check || shouldShutdown) {
 					if (shouldShutdown) {
-						dialog.labelContent.setText("Shutting down...");
+						dialog.statusLabel.setText("Shutting down...");
 					} else {
-						dialog.labelContent.setText("Guild Wars 2 closed!");
+						dialog.statusLabel.setText("Guild Wars 2 closed!");
 					}
 					processRunning = false;
 
