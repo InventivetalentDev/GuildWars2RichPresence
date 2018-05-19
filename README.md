@@ -1,5 +1,9 @@
 # GuildWars2RichPresence
-Discord Rich Presence for Guild Wars 2
+Discord Rich Presence for Guild Wars 2  
+
+
+Download latest release: [adfly](http://ad.yeleha.co/6563690/gw2rp) | [direct](https://github.com/InventivetalentDev/GuildWars2RichPresence/releases/latest)
+
 
 ![](https://yeleha.co/2KywbCw)  
 
