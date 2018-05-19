@@ -11,4 +11,6 @@ Download latest release: [adfly](http://ad.yeleha.co/6563690/gw2rp) | [direct](h
 
 ![](https://yeleha.co/2wSz130)  
 
-![](https://yeleha.co/2rQqGHs)
+![](https://yeleha.co/2rQqGHs)  
+
+![](https://yeleha.co/2rWoFcT)
